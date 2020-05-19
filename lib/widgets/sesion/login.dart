@@ -1,4 +1,6 @@
+import 'package:academyapp/services/firebase_auth.dart';
 import 'package:academyapp/services/form_validator.dart';
+import 'package:academyapp/widgets/principal/principal.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class _LoginScreen extends State<LoginScreen> {
   bool _autoValidate = false;
   String email = '';
   String password = '';
+  FirebaseAuthService fas = new FirebaseAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class _LoginScreen extends State<LoginScreen> {
                 validator: FormValidator.validatePassword,
                 autocorrect: false,
                 obscureText: _obscurePW,
-                onChanged: (value) => this.email = value,
+                onChanged: (value) => this.password= value,
                 decoration: InputDecoration(
                     labelText: 'Contraseña',
                     hintText: "********",
@@ -86,6 +89,12 @@ class _LoginScreen extends State<LoginScreen> {
 
   void _validateLogin(){
     if(_formKey.currentState.validate())
-      print('inicio valido');
+      fas.handleAuth(email, password, _scaffoldKey).then((value){
+        if(value!=null) Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MainScreen()));
+      });
   }
 }

@@ -30,9 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     Preferencias.loadLoginFields().then((value){
       if(value[0]==''&&value[0]=='')
-      Navigator.of(context).push(MaterialPageRoute(builder: (build)=>LoginScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (build)=>LoginScreen()));
       else
-      Navigator.of(context).push(MaterialPageRoute(builder: (build)=>MainScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (build)=>MainScreen()));
     });
     super.initState();
   }
