@@ -23,4 +23,9 @@ class FormValidator {
     else
       return null;
   }
+
+  static String validatePassword(String value){
+    if(value.length<8) return "La contraseña debe tener mínimo 8 carácteres";
+    return null;
+  }
 }
