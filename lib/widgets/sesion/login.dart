@@ -10,11 +10,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreen extends State<LoginScreen> {
   bool _obscurePW = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   bool _autoValidate = false;
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(title: Text('Inicio de sesión')),
       body: Padding(
         padding: EdgeInsets.all(32),
@@ -27,7 +31,7 @@ class _LoginScreen extends State<LoginScreen> {
               TextFormField(
                   validator: FormValidator.validateEmail,
                   keyboardType: TextInputType.emailAddress,
-                  onChanged: (value) => null,
+                  onChanged: (value) => this.email = value,
                   decoration: InputDecoration(
                       hintText: 'ejemplo@unete.org',
                       labelText: 'Correo',
@@ -40,7 +44,7 @@ class _LoginScreen extends State<LoginScreen> {
                 validator: FormValidator.validatePassword,
                 autocorrect: false,
                 obscureText: _obscurePW,
-                onChanged: (value) => null,
+                onChanged: (value) => this.email = value,
                 decoration: InputDecoration(
                     labelText: 'Contraseña',
                     hintText: "********",
