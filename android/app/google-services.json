@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "739253220420",
+    "firebase_url": "https://academyapp-cd476.firebaseio.com",
+    "project_id": "academyapp-cd476",
+    "storage_bucket": "academyapp-cd476.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739253220420:android:1264d2a5d889f76fe97811",
+        "android_client_info": {
+          "package_name": "com.example.academyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739253220420-so7qma9pffiglnqpkjbes3umrcds468d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0nDxgB3hNit9fsZ4h_S70LavLfn0xP6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739253220420-so7qma9pffiglnqpkjbes3umrcds468d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
