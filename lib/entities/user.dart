@@ -12,8 +12,7 @@ class User {
   
   factory User()=> _instance;
   
-  User._internal(){
-  }
+  User._internal();
   
   static User get instance => _instance;
 }
