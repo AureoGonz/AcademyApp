@@ -1,4 +1,5 @@
 import 'package:academyapp/widgets/principal/drawer.dart';
+import 'package:academyapp/widgets/principal/screens/cursos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -47,9 +48,7 @@ class _MainScreen extends State<MainScreen>
       ]),
       body: TabBarView(
         children: <Widget>[
-          Center(
-            child: Text('1'),
-          ),
+          ListCursos(),
           Center(
             child: Text('2'),
           ),
