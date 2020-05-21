@@ -1,3 +1,6 @@
+import 'package:academyapp/entities/user.dart';
+import 'package:academyapp/services/firestore_query.dart';
+import 'package:academyapp/services/preferences.dart';
 import 'package:academyapp/widgets/principal/drawer.dart';
 import 'package:academyapp/widgets/principal/screens/cursos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +19,9 @@ class _MainScreen extends State<MainScreen>
   FocusNode mainFocusNode = FocusNode();
   FocusNode myFocusNode = FocusNode();
   Widget headerOption;
+
+  FirestoreQueryService fqs = FirestoreQueryService.instance;
+  User user = User();
 
   @override
   void initState() {
@@ -96,6 +102,9 @@ class _MainScreen extends State<MainScreen>
           });
         },
       )),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Preferencias.loadEmailUser().then((value) => giveUser(value));
+      }),
     );
   }
 
@@ -137,5 +146,9 @@ class _MainScreen extends State<MainScreen>
                 FocusScope.of(context).requestFocus(FocusNode());
               })),
     );
+  }
+
+  void giveUser(String email) {
+    print(user.name);
   }
 }

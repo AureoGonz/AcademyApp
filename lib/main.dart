@@ -1,4 +1,6 @@
+import 'package:academyapp/entities/user.dart';
 import 'package:academyapp/services/firebase_auth.dart';
+import 'package:academyapp/services/firestore_query.dart';
 import 'package:academyapp/services/preferences.dart';
 import 'package:academyapp/widgets/principal/principal.dart';
 import 'package:academyapp/widgets/sesion/login.dart';
@@ -28,6 +30,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   FirebaseAuthService fas = new FirebaseAuthService();
+  FirestoreQueryService fqs = FirestoreQueryService.instance;
 
   @override
   void initState() {
@@ -36,10 +39,18 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (build) => LoginScreen()));
       else {
-        fas.handleAuth(value[0], value[1], _scaffoldKey).then((value) {
-          if (value != null)
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => MainScreen()));
+        fas.handleAuth(value[0], value[1], _scaffoldKey).then((val) {
+          if (val != null)
+            fqs.getUserData(value[0]).then((value) {
+              if (value.documents.length == 1) {
+                User user = User();
+                print(user.name);
+                user.fromSnapshot(value.documents[0]);
+                print(user.name);
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MainScreen()));
+              }
+            });
         });
       }
     });

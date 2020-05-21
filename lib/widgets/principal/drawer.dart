@@ -1,3 +1,4 @@
+import 'package:academyapp/entities/user.dart';
 import 'package:academyapp/services/preferences.dart';
 import 'package:academyapp/widgets/sesion/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ class MainDrawer extends StatefulWidget {
 
 class _MainDrawer extends State<MainDrawer> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  User user = User();
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +19,8 @@ class _MainDrawer extends State<MainDrawer> {
       child: Column(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text('User Name'),
-            accountEmail: Text('User email'),
+            accountName: Text(user.name),
+            accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
               child: FlutterLogo(
                 size: 42.0,

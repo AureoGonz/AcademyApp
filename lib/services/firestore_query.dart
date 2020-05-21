@@ -15,4 +15,8 @@ class FirestoreQueryService {
   Stream<QuerySnapshot> allCursos() {
     return fs.collection('cursos').where('visible', isEqualTo: true).snapshots();
   }
+
+  Future<QuerySnapshot> getUserData(String email) async {
+    return fs.collection('user_details').where('email', isEqualTo: email).limit(1).getDocuments();
+  }
 }
