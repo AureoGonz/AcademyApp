@@ -13,17 +13,20 @@ class _MainScreen extends State<MainScreen>
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TabController _tabController;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-  Widget optionButton = MainSearchButton();
+  FocusNode mainFocusNode = FocusNode();
+  FocusNode myFocusNode = FocusNode();
+  Widget headerOption;
 
   @override
   void initState() {
-    optionButton = MainSearchButton();
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
+    mainFocusNode.dispose();
+    myFocusNode.dispose();
     _auth.signOut();
     super.dispose();
   }
@@ -33,20 +36,23 @@ class _MainScreen extends State<MainScreen>
     return Scaffold(
       key: _scaffoldKey,
       endDrawer: MainDrawer(),
-      appBar: AppBar(leading: null, title: Text('Principal'), actions: <Widget>[
-        optionButton,
-        IconButton(
-            icon: CircleAvatar(
-              child: FlutterLogo(
-                size: 27.0,
-              ),
-              backgroundColor: Colors.white,
-            ),
-            onPressed: () {
-              _scaffoldKey.currentState.openEndDrawer();
-            }),
-      ]),
+      appBar: AppBar(
+          leading: null,
+          title: headerOption ?? mainSearchText(context),
+          actions: <Widget>[
+            IconButton(
+                icon: CircleAvatar(
+                  child: FlutterLogo(
+                    size: 27.0,
+                  ),
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  _scaffoldKey.currentState.openEndDrawer();
+                }),
+          ]),
       body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           ListCursos(),
           Center(
@@ -59,61 +65,77 @@ class _MainScreen extends State<MainScreen>
         controller: _tabController,
       ),
       bottomNavigationBar: Material(
-          child: TabBar(tabs: [
-        Tab(
-          icon: IconButton(
-              icon: Icon(
-                Icons.home,
-              ),
-              onPressed: () {
-                _tabController.animateTo(0);
-                setState(() {
-                  optionButton = MainSearchButton();
-                });
-              },
-              tooltip: 'Cursos'),
-        ),
-        Tab(
-          icon: IconButton(
-              icon: Icon(
-                Icons.class_,
-              ),
-              onPressed: () {
-                _tabController.animateTo(1);
-                setState(() {
-                  optionButton = MainSearchButton2();
-                });
-              },
-              tooltip: 'Mis Cursos'),
-        ),
-        Tab(
-          icon: IconButton(
-              icon: Icon(
-                Icons.assessment,
-              ),
-              onPressed: () {
-                _tabController.animateTo(2);
-                setState(() {
-                  optionButton = Container();
-                });
-              },
-              tooltip: 'Skills'),
-        )
-      ], controller: _tabController)),
+          child: TabBar(
+        tabs: [
+          Tab(
+            child: Text('Cursos'),
+            icon: Icon(Icons.class_),
+          ),
+          Tab(child: Text('Mis cursos'), icon: Icon(Icons.widgets)),
+          Tab(
+            child: Text('Habilidades'),
+            icon: Icon(
+              Icons.assessment,
+            ),
+          )
+        ],
+        controller: _tabController,
+        onTap: (i) {
+          setState(() {
+            switch (i) {
+              case 0:
+                headerOption = mainSearchText(context);
+                break;
+              case 1:
+                headerOption = mySearchText(context);
+                break;
+              default:
+                headerOption = Text('Habilidades');
+                break;
+            }
+          });
+        },
+      )),
     );
   }
-}
 
-class MainSearchButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(icon: Icon(Icons.search), onPressed: () {});
+  Widget mainSearchText(BuildContext context) {
+    return TextField(
+      focusNode: mainFocusNode,
+      keyboardType: TextInputType.text,
+      onChanged: (value) {
+        print('desde 1');
+      },
+      onSubmitted: (value) {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      decoration: InputDecoration(
+          hintText: 'Buscar cursos',
+          suffixIcon: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              })),
+    );
   }
-}
 
-class MainSearchButton2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(icon: Icon(Icons.send), onPressed: () {});
+  Widget mySearchText(BuildContext context) {
+    return TextFormField(
+      focusNode: myFocusNode,
+      keyboardType: TextInputType.text,
+      onChanged: (value) {
+        print('desde 2');
+      },
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      decoration: InputDecoration(
+          hintText: 'Buscar en mis cursos',
+          suffixIcon: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              })),
+    );
   }
 }
