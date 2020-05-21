@@ -13,6 +13,6 @@ class FirestoreQueryService {
   static FirestoreQueryService get instance => _instance;
 
   Stream<QuerySnapshot> allCursos() {
-    return fs.collection('cursos').snapshots();
+    return fs.collection('cursos').where('visible', isEqualTo: true).snapshots();
   }
 }
