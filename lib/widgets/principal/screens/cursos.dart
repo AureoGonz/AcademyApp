@@ -1,4 +1,5 @@
 import 'package:academyapp/services/firestore_query.dart';
+import 'package:academyapp/widgets/principal/screens/item_curso.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class ListCursos extends StatelessWidget {
                     );
                   List<DocumentSnapshot> docs = snapshot.data.documents;
                   List<Widget> cursos = docs
-                      .map((e) => ListTile(title: Text(e.data['title'])))
+                      .map((e) => ItemListaCurso(curso: e))
                       .toList();
                   return ListView(
                     controller: scrollController,
