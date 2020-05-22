@@ -1,3 +1,4 @@
+import 'package:academyapp/widgets/curso/curso.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart'
@@ -25,7 +26,7 @@ class ItemListaCurso extends StatelessWidget {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           onTap: (){
-            print(curso.documentID);
+            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CursoScreen(curso: curso)));
           },
         ),
         Divider()
