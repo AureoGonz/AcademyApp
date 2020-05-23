@@ -1,6 +1,7 @@
 import 'package:academyapp/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:transparent_image/transparent_image.dart'
     show kTransparentImage;
 
@@ -23,9 +24,19 @@ class CursoScreen extends StatelessWidget {
     else
       _panel = [
         Expanded(
-            child: Center(
-          child: Text('No está suscrito'),
-        )),
+            child: ListView.builder(
+                itemCount: curso.data['descripcion'].length,
+                itemBuilder: (contex, index) {
+                  // return Text(curso.data['descripcion'][index]);
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, right: 16, left: 16),
+                    child: MarkdownBody(
+                      data: curso.data['descripcion'][index],
+                      styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                          .copyWith(textAlign: WrapAlignment.spaceBetween, p: TextStyle(fontSize: 16)),
+                    ),
+                  );
+                })),
         ButtonBar(
           buttonMinWidth: double.maxFinite,
           children: <Widget>[
@@ -50,9 +61,9 @@ class CursoScreen extends StatelessWidget {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(top: 16, bottom: 8, left: 32, right: 8),
+                const EdgeInsets.only(top: 16, bottom: 16, left: 16, right: 16),
             child: Text(curso.data['title'],
-                textAlign: TextAlign.justify,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ),
           ..._panel
