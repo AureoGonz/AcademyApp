@@ -23,52 +23,61 @@ class CursoScreen extends StatelessWidget {
       ];
     else
       _panel = [
-        Expanded(
-            child: ListView.builder(
-                itemCount: curso.data['descripcion'].length,
-                itemBuilder: (contex, index) {
-                  // return Text(curso.data['descripcion'][index]);
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, right: 16, left: 16),
-                    child: MarkdownBody(
-                      data: curso.data['descripcion'][index],
-                      styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
-                          .copyWith(textAlign: WrapAlignment.spaceBetween, p: TextStyle(fontSize: 16)),
-                    ),
-                  );
-                })),
-        ButtonBar(
-          buttonMinWidth: double.maxFinite,
-          children: <Widget>[
-            RaisedButton(
-              onPressed: () {},
-              child: Text('Inscribirse'),
-            )
+        SliverList(
+            delegate: SliverChildListDelegate(
+          [
+            ButtonBar(
+              buttonMinWidth: double.maxFinite,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {},
+                  child: Text('Inscribirse'),
+                )
+              ],
+            ),
           ],
+        )),
+        SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                  top: 8.0, bottom: 8.0, right: 16, left: 16),
+              child: MarkdownBody(
+                data: curso.data['descripcion'][index],
+                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                    .copyWith(
+                        textAlign: WrapAlignment.spaceBetween,
+                        p: TextStyle(fontSize: 16)),
+              ),
+            );
+          }, childCount: curso.data['descripcion'].length),
         ),
       ];
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[Icon(Icons.brightness_medium)],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image: curso.data['thumbnail'],
-            width: double.infinity,
+        body: CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          pinned: true,
+          snap: false,
+          floating: false,
+          expandedHeight: 300.00,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            title: Text(
+              curso.data['title'],
+              style: TextStyle(
+                  color: Colors.white,
+                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.35)),
+            ),
+            background: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: curso.data['thumbnail'],
+              width: double.infinity,
+            ),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 16, bottom: 16, left: 16, right: 16),
-            child: Text(curso.data['title'],
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ),
-          ..._panel
-        ],
-      ),
-    );
+        ),
+        ..._panel
+      ],
+    ));
   }
 }
