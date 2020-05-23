@@ -62,6 +62,7 @@ class CursoScreen extends StatelessWidget {
           floating: false,
           expandedHeight: 300.00,
           flexibleSpace: FlexibleSpaceBar(
+            titlePadding: EdgeInsets.only(left: 16.0, right: 16.0, bottom:8),
             centerTitle: true,
             title: Text(
               curso.data['title'],
@@ -75,6 +76,9 @@ class CursoScreen extends StatelessWidget {
               width: double.infinity,
             ),
           ),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.brightness_medium,), onPressed: (){})
+          ],
         ),
         ..._panel
       ],
