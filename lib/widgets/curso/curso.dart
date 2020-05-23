@@ -1,4 +1,5 @@
 import 'package:academyapp/entities/user.dart';
+import 'package:academyapp/services/firestore_query.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -12,14 +13,12 @@ class CursoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirestoreQueryService fqs = FirestoreQueryService();
     User user = User();
     List<Widget> _panel;
     if (user.cursos.contains(curso.documentID))
       _panel = [
-        Expanded(
-            child: Center(
-          child: Text('Está suscrito'),
-        ))
+        SliverFixedExtentList(delegate: SliverChildListDelegate([Center(child: Text('estás suscrito'))]), itemExtent: 1000)
       ];
     else
       _panel = [
@@ -30,7 +29,9 @@ class CursoScreen extends StatelessWidget {
               buttonMinWidth: double.maxFinite,
               children: <Widget>[
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    fqs.addCursoUser(curso.documentID);
+                  },
                   child: Text('Inscribirse'),
                 )
               ],

@@ -3,6 +3,7 @@ import 'package:academyapp/services/firestore_query.dart';
 import 'package:academyapp/services/preferences.dart';
 import 'package:academyapp/widgets/principal/drawer.dart';
 import 'package:academyapp/widgets/principal/screens/cursos.dart';
+import 'package:academyapp/widgets/principal/screens/mis_cursos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -61,9 +62,7 @@ class _MainScreen extends State<MainScreen>
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           ListCursos(),
-          Center(
-            child: Text('2'),
-          ),
+          new ListaMisCursos(),
           Center(
             child: Text('3'),
           )
@@ -104,6 +103,9 @@ class _MainScreen extends State<MainScreen>
       )),
       floatingActionButton: FloatingActionButton(onPressed: () {
         Preferencias.loadEmailUser().then((value) => giveUser(value));
+        setState(() {
+          
+        });
       }),
     );
   }
@@ -149,6 +151,6 @@ class _MainScreen extends State<MainScreen>
   }
 
   void giveUser(String email) {
-    print(user.name);
+    print(user.id);
   }
 }
