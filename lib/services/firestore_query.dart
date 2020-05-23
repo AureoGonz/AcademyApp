@@ -44,7 +44,7 @@ class FirestoreQueryService {
     fs.collection('user_details').document(user.id).updateData({
       'cursos': FieldValue.arrayUnion([idCurso])
     }).whenComplete((){
-      batch.updateData(fs.collection('cursos').document('idCurso'), {'subs' : FieldValue.increment(1)});
+      batch.updateData(fs.collection('cursos').document(idCurso), {'subs' : FieldValue.increment(1)});
     });
   }
 }
