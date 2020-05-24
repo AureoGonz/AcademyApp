@@ -18,7 +18,10 @@ class CursoScreen extends StatelessWidget {
     List<Widget> _panel;
     if (user.cursos.contains(curso.documentID))
       _panel = [
-        SliverFixedExtentList(delegate: SliverChildListDelegate([Center(child: Text('estás suscrito'))]), itemExtent: 1000)
+        SliverFixedExtentList(
+            delegate: SliverChildListDelegate(
+                [Center(child: Text('estás suscrito'))]),
+            itemExtent: 1000)
       ];
     else
       _panel = [
@@ -30,7 +33,10 @@ class CursoScreen extends StatelessWidget {
               children: <Widget>[
                 RaisedButton(
                   onPressed: () {
-                    fqs.addCursoUser(curso.documentID);
+                    fqs.addCursoUser(curso.documentID).whenComplete(() {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => CursoScreen(curso: curso)));
+                    });
                   },
                   child: Text('Inscribirse'),
                 )
@@ -55,34 +61,42 @@ class CursoScreen extends StatelessWidget {
         ),
       ];
     return Scaffold(
-        body: CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          pinned: true,
-          snap: false,
-          floating: false,
-          expandedHeight: 300.00,
-          flexibleSpace: FlexibleSpaceBar(
-            titlePadding: EdgeInsets.only(left: 16.0, right: 16.0, bottom:8),
-            centerTitle: true,
-            title: Text(
-              curso.data['title'],
-              style: TextStyle(
-                  color: Colors.white,
-                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.35)),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: 300.00,
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8),
+              centerTitle: true,
+              title: Text(
+                curso.data['title'],
+                style: TextStyle(
+                    color: Colors.white,
+                    backgroundColor: Color.fromRGBO(0, 0, 0, 0.35)),
+              ),
+              background: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: curso.data['thumbnail'],
+                width: double.infinity,
+              ),
             ),
-            background: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: curso.data['thumbnail'],
-              width: double.infinity,
-            ),
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(
+                    Icons.brightness_medium,
+                  ),
+                  onPressed: () {})
+            ],
           ),
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.brightness_medium,), onPressed: (){})
-          ],
-        ),
-        ..._panel
-      ],
-    ));
+          ..._panel
+        ],
+      ),
+      // floatingActionButton: FloatingActionButton(onPressed: (){
+      //   fqs.makeSubscription(curso.documentID);
+      // }),
+    );
   }
 }

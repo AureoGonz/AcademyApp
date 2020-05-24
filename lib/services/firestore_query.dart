@@ -31,7 +31,7 @@ class FirestoreQueryService {
   }
 
   Stream<QuerySnapshot> allMisCursos() {
-    if(user.cursos.length==0) return new Stream.empty();
+    if (user.cursos.length == 0) return new Stream.empty();
     return fs
         .collection('cursos')
         .where('visible', isEqualTo: true)
@@ -43,8 +43,39 @@ class FirestoreQueryService {
     user.cursos.add(idCurso);
     fs.collection('user_details').document(user.id).updateData({
       'cursos': FieldValue.arrayUnion([idCurso])
-    }).whenComplete((){
-      batch.updateData(fs.collection('cursos').document(idCurso), {'subs' : FieldValue.increment(1)});
+    }).whenComplete(() {
+      makeSubscription(idCurso);
+      batch.updateData(fs.collection('cursos').document(idCurso),
+          {'subs': FieldValue.increment(1)});
+    });
+  }
+
+  makeSubscription(String idCurso) {
+    fs
+        .collection('user_details')
+        .document(user.id)
+        .collection('cursos')
+        .document(idCurso)
+        .setData({'completado': false});
+    fs
+        .collection('cursos')
+        .document(idCurso)
+        .collection('contenido')
+        .snapshots()
+        .listen((qs) {
+      qs.documents.forEach((element) async {
+        print(element.data);
+        await fs
+            .collection('user_details')
+            .document(user.id)
+            .collection('cursos')
+            .document(idCurso)
+            .updateData({
+          'contenido': FieldValue.arrayUnion([element.data])
+        }).whenComplete(() {
+          print('completado');
+        });
+      });
     });
   }
 }
