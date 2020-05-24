@@ -63,9 +63,9 @@ class FirestoreQueryService {
         .collection('contenido')
         .snapshots()
         .listen((qs) {
-      qs.documents.forEach((element) async {
+      qs.documents.forEach((element) {
         print(element.data);
-        await fs
+        fs
             .collection('user_details')
             .document(user.id)
             .collection('cursos')
@@ -77,5 +77,15 @@ class FirestoreQueryService {
         });
       });
     });
+  }
+
+  Stream<DocumentSnapshot> getContentCurso(String idCurso) {
+    print('getcontent');
+    return fs
+        .collection('user_details')
+        .document(user.id)
+        .collection('cursos')
+        .document(idCurso)
+        .get().asStream();
   }
 }

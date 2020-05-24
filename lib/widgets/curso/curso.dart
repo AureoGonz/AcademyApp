@@ -1,5 +1,6 @@
 import 'package:academyapp/entities/user.dart';
 import 'package:academyapp/services/firestore_query.dart';
+import 'package:academyapp/widgets/curso/item_tema.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -18,10 +19,25 @@ class CursoScreen extends StatelessWidget {
     List<Widget> _panel;
     if (user.cursos.contains(curso.documentID))
       _panel = [
-        SliverFixedExtentList(
-            delegate: SliverChildListDelegate(
-                [Center(child: Text('estás suscrito'))]),
-            itemExtent: 1000)
+        StreamBuilder(
+            stream: fqs.getContentCurso(curso.documentID),
+            builder: (builder, snapshot) {
+              if (!snapshot.hasData)
+                return SliverList(
+                    delegate: SliverChildListDelegate([
+                  Center(
+                    child: Text('No hay datos en el curso'),
+                  )
+                ]));
+              List<Map<String, dynamic>> contenido =
+                  List.from(snapshot.data['contenido']);
+              contenido.sort((a, b) => a['indice'] - b['indice']);
+              contenido.retainWhere((e) => e['enLista']);
+              print(contenido);
+              List<Widget> temas =
+                  contenido.map((e) => ItemListaTema(tema: e)).toList();
+              return SliverList(delegate: SliverChildListDelegate(temas));
+            })
       ];
     else
       _panel = [
@@ -94,9 +110,6 @@ class CursoScreen extends StatelessWidget {
           ..._panel
         ],
       ),
-      // floatingActionButton: FloatingActionButton(onPressed: (){
-      //   fqs.makeSubscription(curso.documentID);
-      // }),
     );
   }
 }
