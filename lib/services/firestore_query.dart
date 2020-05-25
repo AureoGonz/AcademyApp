@@ -86,6 +86,17 @@ class FirestoreQueryService {
         .document(user.id)
         .collection('cursos')
         .document(idCurso)
-        .get().asStream();
+        .get()
+        .asStream();
+  }
+
+  Stream<QuerySnapshot> getItemsContent(String idCurso, String idTema) {
+    return fs
+        .collection('cursos')
+        .document(idCurso)
+        .collection('contenido')
+        .document(idTema)
+        .collection('items')
+        .snapshots();
   }
 }

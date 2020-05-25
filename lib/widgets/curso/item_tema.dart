@@ -1,9 +1,12 @@
+import 'package:academyapp/widgets/tema/tema.dart';
 import 'package:flutter/material.dart';
 
 class ItemListaTema extends StatelessWidget {
   final Map<String, dynamic> tema;
+  final String idCurso;
 
-  const ItemListaTema({Key key, @required this.tema}) : super(key: key);
+  const ItemListaTema({Key key, @required this.tema, @required this.idCurso})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,11 @@ class ItemListaTema extends StatelessWidget {
     return ListTile(
       title: Text(tema['titulo']),
       onTap: () {
-        print(tema['id']);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => TemaScreen(
+                idTema: tema['id'],
+                idCurso: idCurso,
+                tituloTema: tema['titulo'])));
       },
     );
   }

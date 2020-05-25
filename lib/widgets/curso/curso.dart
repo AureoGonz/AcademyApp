@@ -35,7 +35,7 @@ class CursoScreen extends StatelessWidget {
               contenido.retainWhere((e) => e['enLista']);
               print(contenido);
               List<Widget> temas =
-                  contenido.map((e) => ItemListaTema(tema: e)).toList();
+                  contenido.map((e) => ItemListaTema(tema: e, idCurso: curso.documentID,)).toList();
               return SliverList(delegate: SliverChildListDelegate(temas));
             })
       ];
