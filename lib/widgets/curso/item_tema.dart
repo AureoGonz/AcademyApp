@@ -12,6 +12,7 @@ class ItemListaTema extends StatelessWidget {
   Widget build(BuildContext context) {
     if (tema['tipo'] == 2)
       return ExpansionTile(
+        initiallyExpanded: true,
         title: Text(tema['titulo']),
         children: List.from(tema['items'])
             .map((e) => ListTile(
